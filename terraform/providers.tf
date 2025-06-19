@@ -10,12 +10,12 @@ terraform {
     }
   }
 
-  backend "azurerm" {
-    resource_group_name  = "skink-rg"
-    storage_account_name = "skinktfstate"
-    container_name       = "tfstate"
-    key                  = "terraform.tfstate"
-  }
+  #backend "azurerm" {
+  #  resource_group_name  = "skink-rg"
+  #  storage_account_name = "skinktfstate"
+  #  container_name       = "tfstate"
+  #  key                  = "terraform.tfstate"
+  #}
 }
 
 provider "azurerm" {
