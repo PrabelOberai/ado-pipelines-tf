@@ -18,17 +18,27 @@ stages:
             inputs:
               terraformVersion: $(terraformVersion)
 
-          # Initialize Terraform
-          - task: TerraformTaskV4@4
+          - task: DownloadPipelineArtifact@2
             inputs:
-              provider: 'azurerm'
-              backendServiceArm: $(azureServiceConnection)
-              backendAzureRmResourceGroupName: $(backendResourceGroup)
-              backendAzureRmStorageAccountName: $(backendStorageAccount)
-              backendAzureRmContainerName: $(backendContainer)
-              backendAzureRmKey: $(backendKey)
-              command: 'init'  # Initialize Terraform
-              workingDirectory: 'terraform'  # Set the working directory
+              artifact: 'tfstate'
+              path: '$(System.DefaultWorkingDirectory)/terraform'
+
+          # Initialize Terraform
+          #- task: TerraformTaskV4@4
+          #  inputs:
+          #    provider: 'azurerm'
+          #    backendServiceArm: $(azureServiceConnection)
+          #    backendAzureRmResourceGroupName: $(backendResourceGroup)
+          #    backendAzureRmStorageAccountName: $(backendStorageAccount)
+          #    backendAzureRmContainerName: $(backendContainer)
+          #    backendAzureRmKey: $(backendKey)
+          #    command: 'init'  # Initialize Terraform
+          #    workingDirectory: 'terraform'  # Set the working directory
+
+          - script: |
+              terraform init -backend=false
+            workingDirectory: terraform
+            displayName: 'Terraform Init (Local Backend)'
 
           # Validate Terraform configuration
           - task: TerraformTaskV4@4
